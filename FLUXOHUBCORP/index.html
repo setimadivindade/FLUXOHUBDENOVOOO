@@ -1,0 +1,658 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FLUXOHUB · Materiais de Hot</title>
+<meta name="description" content="FLUXOHUB — Materiais práticos, estratégias e direcionamentos para quem quer começar no mercado digital.">
+<meta name="theme-color" content="#0a0707">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=switzer@400,500,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0707;
+  --bg-2:#110b0b;
+  --card:#0f0a0a;
+  --red:#ff2b2b;
+  --red-soft:rgba(255,43,43,.14);
+  --ink:#ffffff;
+  --mute:rgba(255,255,255,.56);
+  --dim:rgba(255,255,255,.34);
+  --line:rgba(255,70,70,.13);
+  --line-2:rgba(255,255,255,.08);
+  --plus:rgba(255,120,120,.55);
+  --max:1180px;
+  --gut:16px;
+  --edge:max(var(--gut), calc(50% - var(--max) / 2));
+  --serif:"Instrument Serif",Georgia,serif;
+  --sans:Switzer,ui-sans-serif,system-ui,sans-serif;
+  --mono:"Geist Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.3;letter-spacing:-.02em;
+  overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--red);color:#fff}
+
+/* trilhos verticais da página */
+.rails{position:fixed;inset:0;pointer-events:none;z-index:0}
+
+/* cédulas de R$100 caindo ao fundo */
+#money{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;perspective:900px}
+.bill{position:absolute;top:0;will-change:transform;animation:fall linear infinite}
+.bill svg{display:block;width:100%;height:auto;border-radius:4px;animation:flip ease-in-out infinite alternate;
+  box-shadow:0 20px 40px rgba(0,0,0,.6)}
+@keyframes fall{from{transform:translate3d(0,-25vh,0) rotate(var(--r0))}to{transform:translate3d(var(--dx),125vh,0) rotate(var(--r1))}}
+@keyframes flip{from{transform:rotateX(0deg) rotateY(-28deg)}to{transform:rotateX(38deg) rotateY(28deg)}}
+.rails::before,.rails::after{content:"";position:absolute;top:0;bottom:0;width:1px;background:var(--line)}
+.rails::before{left:var(--edge)}
+.rails::after{right:var(--edge)}
+
+.wrap{position:relative;z-index:1;margin-inline:var(--edge)}
+.pad{padding-inline:48px}
+
+/* seções com régua horizontal e marcadores "+" */
+.sec{position:relative;z-index:1;border-top:1px solid var(--line)}
+.sec::before,.sec::after{content:"";position:absolute;top:-6px;width:11px;height:11px;z-index:2;
+  background:linear-gradient(var(--plus),var(--plus)) center/1px 100% no-repeat,linear-gradient(var(--plus),var(--plus)) center/100% 1px no-repeat}
+.sec::before{left:calc(var(--edge) - 5px)}
+.sec::after{right:calc(var(--edge) - 5px)}
+
+.label{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+.label b{color:var(--red);font-weight:500}
+.serif{font-family:var(--serif);font-weight:400;letter-spacing:-.02em;line-height:1.1}
+.serif em{font-style:italic;color:var(--red)}
+.mute{color:var(--mute)}
+
+/* botões */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:40px;padding:0 18px;border-radius:8px;
+  font-family:var(--sans);font-weight:500;font-size:14px;letter-spacing:-.01em;cursor:pointer;border:0;transition:background .2s,box-shadow .2s,transform .2s}
+.btn-red{background:var(--red);color:#fff;box-shadow:0 0 0 1px rgba(255,120,120,.4) inset,0 8px 24px -8px rgba(255,43,43,.7)}
+.btn-red:hover{background:#ff4646;box-shadow:0 0 0 1px rgba(255,150,150,.5) inset,0 10px 34px -6px rgba(255,43,43,.9)}
+.btn-ghost{background:rgba(255,255,255,.02);color:#fff;border:1px solid var(--line-2);border-radius:12px}
+.btn-ghost:hover{background:rgba(255,43,43,.06);border-color:rgba(255,80,80,.35)}
+.btn kbd{font-family:var(--mono);font-size:10px;opacity:.7;letter-spacing:.04em}
+.link{font-size:14px;color:var(--mute);transition:color .2s}
+.link:hover{color:#fff}
+
+/* textura pontilhada (halftone) */
+.dots{background-image:radial-gradient(rgba(255,90,90,.16) 1px,transparent 1.2px);background-size:5px 5px}
+
+/* ---------- navbar ---------- */
+header{position:sticky;top:0;z-index:40;background:rgba(10,7,7,.82);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;height:68px;padding-inline:32px;gap:36px}
+.logo{font-family:var(--sans);font-weight:600;font-size:18px;letter-spacing:-.04em;display:flex;align-items:center;gap:8px}
+.logo i{width:8px;height:8px;border-radius:2px;background:var(--red);box-shadow:0 0 12px var(--red)}
+.nav ul{display:flex;gap:22px;list-style:none}
+.nav ul a{font-size:14px;color:rgba(255,255,255,.72);transition:color .2s}
+.nav ul a:hover{color:#fff}
+.nav .cta{margin-left:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;height:46px;padding:0 22px}
+.nav .cta small{font-family:var(--mono);font-size:9px;letter-spacing:.08em;color:var(--dim);text-transform:uppercase}
+.burger{display:none;margin-left:auto;width:40px;height:40px;border-radius:10px;border:1px solid var(--line-2);background:rgba(255,255,255,.02);color:#fff}
+.burger span{display:block;width:16px;height:1px;background:#fff;margin:4px auto;transition:.25s}
+.burger[aria-expanded="true"] span:first-child{transform:translateY(2.5px) rotate(45deg)}
+.burger[aria-expanded="true"] span:last-child{transform:translateY(-2.5px) rotate(-45deg)}
+
+/* ---------- hero ---------- */
+.band{height:64px;border-bottom:1px solid var(--line);
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:4px 4px;opacity:.55}
+.hero{display:grid;grid-template-columns:1fr 1fr;min-height:520px}
+.hero-l{padding:72px 48px 56px}
+.hero-r{position:relative;border-left:1px solid var(--line);overflow:hidden}
+#galaxy{position:absolute;inset:0;width:100%;height:100%}
+.hero-r .label{position:absolute;right:24px;bottom:20px;text-transform:none;letter-spacing:.06em}
+.hero h1{font-size:clamp(46px,5.4vw,68px);line-height:1.12;max-width:520px}
+.hero p.sub{margin-top:18px;max-width:380px;font-size:15px;line-height:1.35;color:rgba(255,255,255,.88)}
+.ask{margin-top:36px;max-width:440px;display:flex;align-items:center;gap:8px;padding:6px 6px 6px 16px;border-radius:12px;
+  background:rgba(255,255,255,.025);border:1px solid var(--line-2);transition:border-color .2s}
+.ask:hover{border-color:rgba(255,80,80,.35)}
+.ask > span:first-child{flex:1;min-width:0;font-size:14px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ask .btn{flex:none}
+.hero .note{margin-top:14px;font-size:12.5px;color:var(--dim)}
+
+.stats{display:grid;grid-template-columns:repeat(3,auto) 1fr;border-top:1px solid var(--line)}
+.stat{padding:26px 48px 28px;border-right:1px solid var(--line)}
+.stat b{display:block;font-family:var(--serif);font-weight:400;font-size:32px;letter-spacing:-.02em;line-height:1}
+.stat span{display:block;margin-top:10px;font-size:12.5px;color:var(--mute);line-height:1.3}
+.tabs{display:flex;align-items:flex-end;justify-content:flex-end;gap:22px;padding:0 40px 26px}
+.tabs a{font-size:13px;color:rgba(255,255,255,.72)}
+.tabs a:hover{color:var(--red)}
+
+/* ---------- 01 · como funciona ---------- */
+.s-head{padding:110px 48px 44px;text-align:center}
+.s-head h2{font-size:clamp(42px,6vw,76px);margin-top:20px}
+.split{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line)}
+.split > div{padding:22px 48px 28px}
+.split p{font-size:15px;line-height:1.35;color:rgba(255,255,255,.82);max-width:470px}
+
+.term{margin:8px 48px 100px;border:1px solid var(--line-2);border-radius:14px;background:var(--card);overflow:hidden}
+.term-top{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:1px solid var(--line-2)}
+.term-body{display:grid;grid-template-columns:1.4fr 1fr}
+.code{padding:34px 28px;font-family:var(--mono);font-size:13.5px;line-height:2;color:rgba(255,255,255,.4);border-right:1px solid var(--line-2);overflow:hidden}
+.code .p{color:var(--red)}
+.code .w{color:#fff}
+.code .c{color:rgba(255,255,255,.3)}
+.code .cursor{display:inline-block;width:8px;height:15px;background:var(--red);vertical-align:-2px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.term-side{padding:34px 28px;display:flex;flex-direction:column;justify-content:center;gap:22px}
+.term-side p{font-size:14px;line-height:1.4;color:rgba(255,255,255,.75)}
+.term-side .row{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+
+/* ---------- 02 · materiais ---------- */
+.m-head{display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:end;padding:100px 48px 48px}
+.m-head h2{font-size:clamp(42px,5.4vw,66px);margin-top:16px}
+.m-head p{font-size:15px;line-height:1.4;color:rgba(255,255,255,.8);max-width:420px}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding:0 48px 100px}
+.tile{position:relative;min-height:220px;border-radius:14px;border:1px solid var(--line-2);overflow:hidden;
+  background:linear-gradient(180deg,#141010,#0d0909);padding:22px;display:flex;flex-direction:column;justify-content:space-between;transition:border-color .3s,transform .3s}
+.tile::before{content:"";position:absolute;inset:0;opacity:.7;
+  background-image:radial-gradient(rgba(255,255,255,.07) 1px,transparent 1.2px);background-size:6px 6px;
+  mask-image:linear-gradient(180deg,#000,transparent 85%)}
+.tile::after{content:"";position:absolute;left:50%;bottom:-60%;width:120%;height:100%;transform:translateX(-50%);
+  background:radial-gradient(closest-side,rgba(255,43,43,.28),transparent);opacity:0;transition:opacity .4s}
+.tile:hover{border-color:rgba(255,80,80,.4);transform:translateY(-3px)}
+.tile:hover::after{opacity:1}
+.tile > *{position:relative;z-index:1}
+.tile .top{display:flex;justify-content:space-between}
+.tile h3{font-family:var(--serif);font-weight:400;font-size:30px;letter-spacing:-.02em;line-height:1.05}
+.tile p{margin-top:8px;font-size:13.5px;color:var(--mute);line-height:1.35}
+.tile.cta{background:radial-gradient(120% 90% at 50% 120%,rgba(255,43,43,.35),transparent 60%),#0d0909;border-color:rgba(255,80,80,.3);align-items:center;justify-content:center;text-align:center;gap:18px}
+.bars{display:flex;gap:4px}.bars i{width:30px;height:7px;background:#fff;opacity:.9}.bars i:nth-child(2){width:18px;background:var(--red)}
+
+/* ---------- 03 · para quem é ---------- */
+.who{position:relative;overflow:hidden;padding:100px 48px 80px}
+.arcs{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:.9}
+.who-head{position:relative;text-align:right;margin-left:auto;max-width:620px}
+.who-head h2{font-size:clamp(40px,5.2vw,64px);margin-top:16px}
+.rows{position:relative;margin-top:56px;border-top:1px solid var(--line)}
+.rowi{display:grid;grid-template-columns:1fr 220px 40px;gap:28px;align-items:center;padding:22px 0;border-bottom:1px solid var(--line)}
+.rowi p{font-size:13.5px;color:var(--mute);text-align:right;line-height:1.35}
+.rowi h3{font-size:17px;font-weight:500;letter-spacing:-.02em}
+.rowi .label{text-align:right}
+.who .row-end{position:relative;display:flex;justify-content:flex-end;margin-top:28px}
+
+/* ---------- 04 · o que vem ---------- */
+.feat{padding:90px 48px 90px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:40px 32px;margin-top:28px}
+.grid4 h3{font-family:var(--serif);font-weight:400;font-size:24px;letter-spacing:-.02em;line-height:1.1}
+.grid4 p{margin-top:10px;font-size:13.5px;color:var(--mute);line-height:1.4}
+.feat .label + .grid4 + .label{display:block;margin-top:64px}
+
+/* ---------- FAQ ---------- */
+.faq{padding:100px 48px}
+.faq-grid{display:grid;grid-template-columns:1fr 1.6fr;gap:48px}
+.faq h2{font-size:clamp(40px,5vw,60px);margin-top:16px}
+.faq .side p{margin-top:16px;font-size:14px;color:var(--mute);max-width:300px;line-height:1.4}
+.qa{border-top:1px solid var(--line)}
+details{border-bottom:1px solid var(--line)}
+summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:40px 1fr 24px;gap:12px;align-items:center;padding:22px 0;font-size:16px;font-weight:500}
+summary::-webkit-details-marker{display:none}
+summary .label{color:var(--dim)}
+summary .pm{width:24px;height:24px;position:relative}
+summary .pm::before,summary .pm::after{content:"";position:absolute;left:50%;top:50%;width:11px;height:1px;background:var(--red);transform:translate(-50%,-50%);transition:transform .25s}
+summary .pm::after{transform:translate(-50%,-50%) rotate(90deg)}
+details[open] summary .pm::after{transform:translate(-50%,-50%) rotate(0)}
+details p{padding:0 36px 24px 52px;font-size:14.5px;color:var(--mute);line-height:1.45}
+
+/* ---------- final ---------- */
+.final{position:relative;overflow:hidden;text-align:center;padding:120px 48px 0}
+.final::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(60% 55% at 50% 100%,rgba(255,43,43,.22),transparent 70%)}
+.final h2{position:relative;font-size:clamp(48px,7vw,96px)}
+.final p{position:relative;margin:20px auto 32px;max-width:440px;font-size:15px;color:var(--mute);line-height:1.4}
+.final .row{position:relative;display:flex;gap:16px;justify-content:center;align-items:center;flex-wrap:wrap}
+.wordmark{position:relative;margin-top:90px;font-family:var(--serif);font-size:clamp(84px,21vw,300px);line-height:.78;letter-spacing:-.04em;
+  color:transparent;background:radial-gradient(rgba(255,43,43,.95) 1.3px,transparent 1.6px) 0 0/6px 6px;
+  -webkit-background-clip:text;background-clip:text;user-select:none;
+  -webkit-mask-image:linear-gradient(180deg,#000 30%,transparent 100%);mask-image:linear-gradient(180deg,#000 30%,transparent 100%)}
+
+/* ---------- rodapé ---------- */
+footer{position:relative;z-index:1;border-top:1px solid var(--line);background:rgba(10,7,7,.9)}
+.foot{display:grid;grid-template-columns:1fr auto;gap:28px;padding:40px 48px 26px}
+.foot .logo{font-size:17px}
+.foot p{margin-top:8px;font-size:12.5px;color:var(--mute);max-width:360px;line-height:1.35}
+.foot nav{display:flex;gap:20px;flex-wrap:wrap;justify-content:flex-end;align-items:center}
+.foot nav a{font-size:12.5px;color:rgba(255,255,255,.7)}
+.foot nav a:hover{color:#fff}
+.ig{display:inline-flex;align-items:center;gap:8px}
+.legal{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:18px 48px 30px;border-top:1px solid var(--line);font-size:11.5px;color:var(--dim)}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(16px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
+.rv.in{opacity:1;transform:none}
+.hero .rv{opacity:1;transform:none;animation:up .9s cubic-bezier(.2,.7,.2,1) both}
+.hero .rv:nth-child(2){animation-delay:.08s}.hero .rv:nth-child(3){animation-delay:.16s}.hero .rv:nth-child(4){animation-delay:.24s}.hero .rv:nth-child(5){animation-delay:.32s}
+@keyframes up{from{opacity:0;transform:translateY(14px)}}
+
+/* ---------- responsivo ---------- */
+@media (max-width:1000px){
+  .pad,.hero-l,.s-head,.split > div,.m-head,.tiles,.who,.feat,.faq,.final,.foot,.legal{padding-left:28px;padding-right:28px}
+  .term{margin-left:28px;margin-right:28px}
+  .stat{padding:22px 28px}
+  .grid4{grid-template-columns:repeat(2,1fr)}
+  .tiles{grid-template-columns:repeat(2,1fr)}
+  .stats{grid-template-columns:repeat(3,1fr)}
+  .tabs{display:none}
+}
+@media (max-width:760px){
+  .nav{padding-inline:16px;height:60px}
+  .nav ul{display:none;position:absolute;top:60px;left:0;right:0;flex-direction:column;gap:0;background:#0a0707;border-bottom:1px solid var(--line)}
+  .nav ul.open{display:flex}
+  .nav ul a{display:block;padding:16px 20px;border-top:1px solid var(--line);font-size:15px}
+  .nav .cta{display:none}
+  .burger{display:block}
+  .band{height:36px}
+
+  .hero{grid-template-columns:1fr;min-height:0}
+  .hero-l{padding:44px 20px 36px}
+  .hero h1{font-size:clamp(42px,12vw,54px)}
+  .hero p.sub{font-size:15px;max-width:none}
+  .ask{max-width:none;flex-direction:column;align-items:stretch;padding:12px 8px 8px;gap:10px}
+  .ask > span:first-child{text-align:center}
+  .ask .btn{height:46px}
+  .hero-r{border-left:0;border-top:1px solid var(--line);height:300px}
+  .stats{grid-template-columns:repeat(3,1fr)}
+  .stat{padding:18px 14px 20px}
+  .stat:last-of-type{border-right:0}
+  .stat b{font-size:26px}
+  .stat span{font-size:11.5px}
+
+  .s-head{padding:76px 20px 32px}
+  .split{grid-template-columns:1fr}
+  .split > div{padding:18px 20px}
+  .split > div + div{padding-top:0}
+  .term{margin:8px 20px 76px}
+  .term-body{grid-template-columns:1fr}
+  .code{border-right:0;border-bottom:1px solid var(--line-2);padding:24px 18px;font-size:12px;line-height:1.9}
+  .term-side{padding:24px 18px}
+  .term-side .row .btn{flex:1}
+
+  .m-head{grid-template-columns:1fr;gap:16px;padding:76px 20px 32px}
+  .tiles{grid-template-columns:1fr;padding:0 20px 76px;gap:12px}
+  .tile{min-height:170px}
+
+  .who{padding:76px 20px 64px}
+  .who-head{text-align:left;margin-left:0}
+  .rows{margin-top:36px}
+  .rowi{grid-template-columns:1fr 30px;gap:6px 14px;padding:18px 0}
+  .rowi h3{grid-column:1;grid-row:1}
+  .rowi p{grid-column:1;grid-row:2;text-align:left}
+  .rowi .label{grid-column:2;grid-row:1}
+  .who .row-end{justify-content:stretch}.who .row-end .btn{width:100%}
+
+  .feat{padding:70px 20px}
+  .grid4{grid-template-columns:1fr;gap:26px}
+
+  .faq{padding:76px 20px}
+  .faq-grid{grid-template-columns:1fr;gap:28px}
+  summary{grid-template-columns:30px 1fr 24px;font-size:15px}
+  details p{padding:0 0 22px 42px}
+
+  .final{padding:84px 20px 0}
+  .final .row .btn{width:100%}
+  .wordmark{margin-top:60px;background-size:3.5px 3.5px}
+
+  .foot{grid-template-columns:1fr;padding:32px 20px 22px}
+  .foot nav{justify-content:flex-start;gap:16px}
+  .legal{padding:16px 20px 26px;flex-direction:column}
+}
+@media (prefers-reduced-motion:reduce){
+  .rv{opacity:1;transform:none;transition:none}
+  .code .cursor{animation:none}
+}
+</style>
+</head>
+<body>
+<div class="rails" aria-hidden="true"></div>
+<div id="money" aria-hidden="true"></div>
+
+<!-- NAVBAR -->
+<header>
+  <div class="wrap">
+    <nav class="nav">
+      <a href="#inicio" class="logo" aria-label="FLUXOHUB — início"><i></i>FLUXOHUB</a>
+      <ul id="menu">
+        <li><a href="#inicio">Início</a></li>
+        <li><a href="#como-funciona">Como funciona</a></li>
+        <li><a href="#materiais">Materiais</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+      <a class="btn btn-ghost cta" href="https://www.instagram.com/_fluxohub/" target="_blank" rel="noopener">CONHECER<small>pelo Instagram</small></a>
+      <button class="burger" aria-label="Abrir menu" aria-controls="menu" aria-expanded="false"><span></span><span></span></button>
+    </nav>
+  </div>
+</header>
+
+<main id="inicio">
+  <!-- HERO -->
+  <div class="wrap"><div class="band" aria-hidden="true"></div></div>
+  <section class="sec" style="border-top:0">
+    <div class="wrap">
+      <div class="hero">
+        <div class="hero-l">
+          <div class="label rv"><b>●</b>&nbsp; FLUXOHUB</div>
+          <h1 class="serif rv" style="margin-top:22px">Comece no digital com <em>mais direção.</em></h1>
+          <p class="sub rv">Materiais práticos, estratégias e direcionamentos para quem quer sair da teoria e começar a colocar uma operação digital em prática.</p>
+          <a class="ask rv" href="https://www.instagram.com/_fluxohub/" target="_blank" rel="noopener">
+            <span>Materiais de Hot • FLUXOHUB</span>
+            <span class="btn btn-red">QUERO CONHECER <kbd>↗</kbd></span>
+          </a>
+          <p class="note rv">Atendimento direto pelo Instagram @_fluxohub.</p>
+        </div>
+        <div class="hero-r" aria-hidden="true">
+          <canvas id="galaxy"></canvas>
+          <span class="label">materiais-de-hot · fluxohub</span>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="stat"><b>250</b><span>Criativos<br>de referência</span></div>
+        <div class="stat"><b>5</b><span>Materiais<br>no pacote</span></div>
+        <div class="stat"><b>Um</b><span>Caminho<br>organizado</span></div>
+        <div class="tabs"><a href="#materiais">Criativos</a><a href="#materiais">Modelo</a><a href="#materiais">VSL</a><a href="#materiais">Estratégias</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 01 · COMO FUNCIONA -->
+  <section class="sec" id="como-funciona">
+    <div class="wrap">
+      <div class="s-head rv">
+        <div class="label">01 · Como funciona</div>
+        <h2 class="serif">Da teoria, e então à prática</h2>
+      </div>
+      <div class="split rv">
+        <div><span class="label">o caminho sem enrolação</span></div>
+        <div><p>Você recebe os materiais organizados, entende a estrutura da operação e coloca em prática na ordem certa. Sem juntar peças soltas pela internet, sem perder tempo decidindo por onde começar.</p></div>
+      </div>
+      <div class="term rv">
+        <div class="term-top"><span class="label">seu passo a passo</span><span class="label">fluxohub</span></div>
+        <div class="term-body">
+          <div class="code" aria-label="Passo a passo">
+            <div><span class="p">$</span> <span class="w">fluxohub</span> <span class="w">--começar</span></div>
+            <div class="c">&nbsp;</div>
+            <div class="c"># 01 · acesse os materiais organizados</div>
+            <div class="c"># 02 · siga o direcionamento, etapa por etapa</div>
+            <div class="c"># 03 · coloque em prática e ajuste pelos seus testes</div>
+            <div class="c">&nbsp;</div>
+            <div><span class="p">→</span> <span class="w">operação em andamento</span> <span class="cursor"></span></div>
+          </div>
+          <div class="term-side">
+            <p>Três etapas, uma ordem clara. Os materiais dão a base; a execução fica com você, no seu ritmo, ajustando a partir dos próprios testes.</p>
+            <div class="row">
+              <a class="btn btn-red" href="https://www.instagram.com/_fluxohub/" target="_blank" rel="noopener">Quero conhecer</a>
+              <a class="link" href="#materiais">Ver materiais</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 · MATERIAIS -->
+  <section class="sec" id="materiais">
+    <div class="wrap">
+      <div class="m-head rv">
+        <div>
+          <div class="label">02 · Produto FLUXOHUB</div>
+          <h2 class="serif">MATERIAIS DE HOT</h2>
+        </div>
+        <p>Uma solução da FLUXOHUB para quem quer começar no mercado digital com mais direção, organização e execução.</p>
+      </div>
+      <div class="tiles">
+        <article class="tile rv"><div class="top"><span class="label">M.01</span><span class="label"><b>hot</b></span></div><div><h3>250 Criativos</h3><p>Referências organizadas para estudar e adaptar.</p></div></article>
+        <article class="tile rv"><div class="top"><span class="label">M.02</span><span class="label"><b>hot</b></span></div><div><h3>Criativos para modelos</h3><p>Peças separadas por perfil para facilitar a escolha.</p></div></article>
+        <article class="tile rv"><div class="top"><span class="label">M.03</span><span class="label"><b>hot</b></span></div><div><h3>Modelo</h3><p>A estrutura base para montar a sua operação.</p></div></article>
+        <article class="tile rv"><div class="top"><span class="label">M.04</span><span class="label"><b>hot</b></span></div><div><h3>VSL</h3><p>Roteiro para guiar a sua apresentação.</p></div></article>
+        <article class="tile rv"><div class="top"><span class="label">M.05</span><span class="label"><b>hot</b></span></div><div><h3>Estratégias</h3><p>Direcionamentos práticos sobre por onde começar.</p></div></article>
+        <article class="tile cta rv">
+          <div class="bars" aria-hidden="true"><i></i><i></i><i></i></div>
+          <span class="label">tudo em um só lugar</span>
+          <a class="btn btn-red" href="https://www.instagram.com/_fluxohub/" target="_blank" rel="noopener">Quero conhecer</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 · PARA QUEM É -->
+  <section class="sec">
+    <div class="wrap">
+      <div class="who">
+        <svg class="arcs" viewBox="0 0 1200 700" preserveAspectRatio="none" aria-hidden="true">
+          <g fill="none" stroke="rgba(255,70,70,.12)" stroke-width="1">
+            <path d="M-100 700 C 100 120, 500 40, 900 700"/><path d="M-80 700 C 120 160, 490 80, 860 700"/>
+            <path d="M-60 700 C 140 200, 480 120, 820 700"/><path d="M-40 700 C 160 240, 470 160, 780 700"/>
+            <path d="M-20 700 C 180 280, 460 200, 740 700"/><path d="M0 700 C 200 320, 450 240, 700 700"/>
+            <path d="M20 700 C 220 360, 440 280, 660 700"/><path d="M40 700 C 240 400, 430 320, 620 700"/>
+          </g>
+        </svg>
+        <div class="who-head rv">
+          <div class="label">03 · Para quem é</div>
+          <h2 class="serif">Feito para quem quer sair da teoria</h2>
+        </div>
+        <div class="rows">
+          <div class="rowi rv"><p>Você ainda não montou nada e quer um ponto de partida organizado.</p><h3>Está começando</h3><span class="label">01</span></div>
+          <div class="rowi rv"><p>Já consumiu muito conteúdo, mas falta transformar isso em uma operação.</p><h3>Travou na teoria</h3><span class="label">02</span></div>
+          <div class="rowi rv"><p>Quer referências e estrutura prontas para economizar tempo de montagem.</p><h3>Quer mais direção</h3><span class="label">03</span></div>
+        </div>
+        <div class="row-end rv"><a class="btn btn-ghost" href="https://www.instagram.com/_fluxohub/" target="_blank" rel="noopener">Falar com a FLUXOHUB</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 · O QUE VEM -->
+  <section class="sec">
+    <div class="wrap">
+      <div class="feat">
+        <div class="label rv">04 · Todo material, organizado</div>
+        <div class="grid4">
+          <div class="rv"><h3>Criativos de referência</h3><p>Uma base ampla de exemplos para estudar formatos e adaptar ao seu projeto.</p></div>
+          <div class="rv"><h3>Estrutura pronta</h3><p>Um modelo de operação para você não começar do zero.</p></div>
+          <div class="rv"><h3>Roteiro de VSL</h3><p>Um guia para organizar a sua apresentação de forma clara.</p></div>
+          <div class="rv"><h3>Direcionamento</h3><p>Orientações práticas sobre a ordem do que fazer primeiro.</p></div>
+        </div>
+        <div class="label rv" style="display:block;margin-top:64px">Sem promessa, com método</div>
+        <div class="grid4">
+          <div class="rv"><h3>Sem enrolação</h3><p>Conteúdo direto, pensado para ser aplicado, não só consumido.</p></div>
+          <div class="rv"><h3>No seu ritmo</h3><p>Você estuda e executa conforme a sua disponibilidade.</p></div>
+          <div class="rv"><h3>Pé no chão</h3><p>Resultados dependem da execução. A FLUXOHUB entrega direção, não garantia.</p></div>
+          <div class="rv"><h3>Atendimento direto</h3><p>Dúvidas resolvidas pelo Instagram @_fluxohub.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="sec" id="faq">
+    <div class="wrap">
+      <div class="faq">
+        <div class="faq-grid">
+          <div class="side rv">
+            <div class="label">05 · FAQ</div>
+            <h2 class="serif">Nada fica sem resposta</h2>
+            <p>Ficou alguma dúvida? Chame a FLUXOHUB no Instagram.</p>
+          </div>
+          <div class="qa rv">
+            <details><summary><span class="label">01</span>O que é a FLUXOHUB?<span class="pm"></span></summary>
+              <p>A FLUXOHUB reúne materiais, estratégias e direcionamentos para quem quer começar no mercado digital de forma mais organizada.</p></details>
+            <details><summary><span class="label">02</span>O que são os Materiais de Hot?<span class="pm"></span></summary>
+              <p>É a oferta da FLUXOHUB com criativos, modelos, roteiro de VSL e direcionamentos práticos para estruturar uma operação digital.</p></details>
+            <details><summary><span class="label">03</span>Preciso ter experiência?<span class="pm"></span></summary>
+              <p>Não. O material foi organizado para quem está começando e quer sair da teoria com um caminho mais claro a seguir.</p></details>
+            <details><summary><span class="label">04</span>Existe garantia de resultado?<span class="pm"></span></summary>
+              <p>Não. Os materiais oferecem direção e organização, mas os resultados dependem da sua execução, dedicação e de fatores de mercado. Não prometemos vendas nem faturamento.</p></details>
+            <details><summary><span class="label">05</span>Como faço para conhecer?<span class="pm"></span></summary>
+              <p>É só chamar a FLUXOHUB no Instagram <a href="https://www.instagram.com/_fluxohub/" target="_blank" rel="noopener" style="color:var(--red)">@_fluxohub</a>.</p></details>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section class="sec">
+    <div class="wrap">
+      <div class="final">
+        <div class="label rv">FLUXOHUB · Materiais de Hot</div>
+        <h2 class="serif rv" style="margin-top:20px">Nada fica na <em>teoria.</em></h2>
+        <p class="rv">Conheça os Materiais de Hot e comece a organizar a sua operação digital com a FLUXOHUB.</p>
+        <div class="row rv">
+          <a class="btn btn-red" href="https://www.instagram.com/_fluxohub/" target="_blank" rel="noopener">QUERO CONHECER <kbd>↗</kbd></a>
+          <a class="link" href="#materiais">Ver materiais</a>
+        </div>
+        <div class="wordmark" aria-hidden="true">FLUXOHUB</div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- RODAPÉ -->
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <a href="#inicio" class="logo"><i></i>FLUXOHUB</a>
+        <p>Materiais, estratégias e direcionamentos para quem quer começar no mercado digital.</p>
+      </div>
+      <nav aria-label="Rodapé">
+        <a href="#inicio">Início</a><a href="#como-funciona">Como funciona</a><a href="#materiais">Materiais</a><a href="#faq">FAQ</a>
+        <a class="ig" href="https://www.instagram.com/_fluxohub/" target="_blank" rel="noopener">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>@_fluxohub</a>
+      </nav>
+    </div>
+    <div class="legal">
+      <span>© <span id="ano"></span> FLUXOHUB. Todos os direitos reservados.</span>
+      <span>Conteúdo educacional. Resultados variam conforme a execução; não há garantia de ganhos.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+document.getElementById('ano').textContent = new Date().getFullYear();
+
+// menu mobile
+const burger = document.querySelector('.burger'), menu = document.getElementById('menu');
+burger.addEventListener('click', () => burger.setAttribute('aria-expanded', menu.classList.toggle('open')));
+menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { menu.classList.remove('open'); burger.setAttribute('aria-expanded', false); }));
+
+// reveal ao rolar
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+}), { threshold: .1, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('main section:not(:first-of-type) .rv').forEach((el, i) => { el.style.transitionDelay = (i % 4) * 70 + 'ms'; io.observe(el); });
+
+// cédulas de R$100 (ilustração estilizada) caindo ao fundo
+(() => {
+  const box = document.getElementById('money');
+  const svg = `
+  <svg viewBox="0 0 470 210" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="nb" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#bfe6f2"/><stop offset=".45" stop-color="#8fd0e6"/><stop offset="1" stop-color="#5fb2d1"/>
+      </linearGradient>
+      <radialGradient id="nw" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#e9f7fb"/><stop offset="1" stop-color="#c6e8f2" stop-opacity="0"/></radialGradient>
+      <radialGradient id="nf" cx=".4" cy=".4" r=".7"><stop offset="0" stop-color="#5d9fc4"/><stop offset="1" stop-color="#245d8c"/></radialGradient>
+      <pattern id="ng" width="8" height="8" patternUnits="userSpaceOnUse"><path d="M0 8 Q4 0 8 8" fill="none" stroke="#2f7fa6" stroke-opacity=".18" stroke-width=".6"/></pattern>
+    </defs>
+    <rect width="470" height="210" fill="url(#nb)"/>
+    <rect width="470" height="210" fill="url(#ng)"/>
+    <!-- área de marca-d'água -->
+    <ellipse cx="300" cy="100" rx="62" ry="80" fill="url(#nw)"/>
+    <!-- corais -->
+    <g fill="none" stroke="#3f8fb8" stroke-opacity=".55" stroke-width="1.4" stroke-linecap="round">
+      <path d="M150 210 C150 160 140 130 120 95 M145 160 C165 140 175 120 175 90 M140 130 C130 120 115 110 110 85 M160 125 C180 110 195 100 205 80 M128 100 C140 80 150 70 150 50 M150 210 C160 175 190 160 215 150"/>
+      <path d="M215 40 C230 60 225 80 240 95 M230 60 C245 55 255 45 258 30"/>
+      <path d="M440 210 C430 175 415 160 395 150 M420 175 C430 160 445 150 455 130"/>
+    </g>
+    <!-- garoupa -->
+    <g transform="translate(62 100) scale(.88)">
+      <path d="M0 55 C20 15 90 -5 160 15 C200 25 225 45 235 60 C225 78 200 95 160 102 C90 115 25 100 0 55 Z" fill="url(#nf)"/>
+      <path d="M2 55 L-38 25 L-30 58 L-40 92 Z" fill="#2e6b98"/>
+      <path d="M70 12 C95 -12 140 -10 165 14" fill="#3d7fad" fill-opacity=".85"/>
+      <path d="M95 100 C110 120 135 122 150 104" fill="#3d7fad" fill-opacity=".85"/>
+      <g fill="#a9d6ea" fill-opacity=".55">
+        <circle cx="60" cy="45" r="6"/><circle cx="85" cy="68" r="7"/><circle cx="110" cy="40" r="6"/><circle cx="135" cy="70" r="6"/>
+        <circle cx="160" cy="45" r="5"/><circle cx="40" cy="70" r="5"/><circle cx="185" cy="68" r="4"/><circle cx="120" cy="88" r="4"/>
+      </g>
+      <circle cx="208" cy="50" r="5" fill="#0d2a44"/><circle cx="209.5" cy="48.5" r="1.6" fill="#fff"/>
+      <path d="M225 66 C218 70 210 72 200 71" stroke="#0d2a44" stroke-width="2" fill="none"/>
+    </g>
+    <!-- peixe pequeno e círculo azul -->
+    <path d="M355 120 C370 100 405 98 425 112 C410 128 375 132 355 120 Z M355 120 L340 108 L342 132 Z" fill="#3a83b3" fill-opacity=".75"/>
+    <circle cx="372" cy="170" r="40" fill="#2c75ab" fill-opacity=".55"/>
+    <!-- textos -->
+    <text x="22" y="30" font-family="Arial,Helvetica,sans-serif" font-weight="700" font-size="15" fill="#0f3d66">BANCO CENTRAL DO BRASIL</text>
+    <text x="20" y="92" font-family="Arial Black,Arial,Helvetica,sans-serif" font-weight="900" font-size="64" fill="#0f3d66" letter-spacing="-2">100</text>
+    <text x="452" y="40" text-anchor="end" font-family="Arial Black,Arial,Helvetica,sans-serif" font-weight="900" font-size="36" fill="#0f3d66" letter-spacing="-1">100</text>
+    <text x="452" y="196" text-anchor="end" font-family="Arial,Helvetica,sans-serif" font-weight="700" font-size="17" fill="#0f3d66">CEM REAIS</text>
+    <text x="270" y="22" font-family="Arial,Helvetica,sans-serif" font-weight="700" font-size="11" fill="#b3263a" letter-spacing="1">FLUXOHUB</text>
+    <text x="22" y="196" font-family="Arial,Helvetica,sans-serif" font-weight="700" font-size="11" fill="#0f3d66" letter-spacing="1">FLUXOHUB</text>
+  </svg>`;
+  const mobile = innerWidth < 760;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const count = mobile ? 8 : 14;
+  for (let i = 0; i < count; i++) {
+    const depth = Math.random();                                   // 0 = longe, 1 = perto
+    const el = document.createElement('div');
+    el.className = 'bill';
+    el.innerHTML = svg;
+    const w = (mobile ? 90 : 120) + depth * (mobile ? 70 : 120);
+    const dur = 30 - depth * 14 + Math.random() * 8;
+    el.style.cssText = `left:${Math.random() * 100 - 10}%;width:${w}px;
+      opacity:${.14 + depth * .26};filter:blur(${(1 - depth) * 2.2}px) brightness(${.6 + depth * .25});
+      animation-duration:${dur}s;animation-delay:${-Math.random() * dur}s;
+      --r0:${Math.random() * 360 | 0}deg;--r1:${(Math.random() * 360 + 200) | 0}deg;--dx:${(Math.random() - .5) * 280 | 0}px`;
+    el.firstElementChild.style.animationDuration = (3 + Math.random() * 3) + 's';
+    if (reduce) { el.style.animation = 'none'; el.style.top = Math.random() * 90 + '%'; el.style.transform = `rotate(${Math.random() * 360 | 0}deg)`; }
+    box.appendChild(el);
+  }
+})();
+
+// galáxia de partículas vermelhas
+(() => {
+  const c = document.getElementById('galaxy'), ctx = c.getContext('2d');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let w, h, dpr, pts = [];
+  const N = innerWidth < 760 ? 2600 : 4200;
+  for (let i = 0; i < N; i++) {
+    // partículas agrupadas em anéis concêntricos, com um pouco de ruído
+    const ring = Math.floor(Math.random() * 14) / 14;
+    const r = Math.min(1, Math.max(0, ring + (Math.random() - .5) * .018 + (Math.random() < .25 ? Math.random() * .07 : 0)));
+    pts.push({ r, a: Math.random() * Math.PI * 2, s: (.0009 + Math.random() * .0012) / (r + .25),
+      z: (Math.random() - .5) * .06 * (1 - r), size: Math.random() < .08 ? 1.6 : .9, b: .35 + Math.random() * .65 });
+  }
+  function resize() {
+    dpr = Math.min(devicePixelRatio || 1, 2);
+    w = c.clientWidth; h = c.clientHeight;
+    c.width = w * dpr; c.height = h * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  resize(); addEventListener('resize', resize);
+  const tilt = -.32, sq = .32;                                   // inclinação e achatamento
+  function frame() {
+    ctx.clearRect(0, 0, w, h);
+    const cx = w / 2, cy = h / 2, R = Math.min(w * .44, h * 1.05);
+    const ct = Math.cos(tilt), st = Math.sin(tilt);
+    for (const p of pts) {
+      if (!reduce) p.a += p.s;
+      const rr = (p.r * .82 + .18) * R;
+      const x0 = Math.cos(p.a) * rr, y0 = Math.sin(p.a) * rr * sq + p.z * R;
+      const x = cx + x0 * ct - y0 * st, y = cy + x0 * st + y0 * ct;
+      const front = Math.sin(p.a) > 0;                          // metade da frente mais brilhante
+      const alpha = p.b * (front ? 1 : .55) * (1 - p.r * .45);
+      ctx.fillStyle = p.r < .3 ? `rgba(255,215,215,${alpha})` : `rgba(255,${70 + (1 - p.r) * 90 | 0},${70 + (1 - p.r) * 80 | 0},${alpha})`;
+      ctx.fillRect(x, y, p.size, p.size);
+    }
+    // núcleo escuro
+    const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, R * .2);
+    g.addColorStop(0, 'rgba(10,7,7,1)'); g.addColorStop(.6, 'rgba(10,7,7,.95)'); g.addColorStop(1, 'rgba(10,7,7,0)');
+    ctx.save(); ctx.translate(cx, cy); ctx.rotate(tilt); ctx.scale(1, .55);
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, R * .2, 0, 7); ctx.fill(); ctx.restore();
+    if (!reduce) requestAnimationFrame(frame);
+  }
+  frame();
+})();
+</script>
+</body>
+</html>
